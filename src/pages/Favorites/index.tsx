@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React, { useEffect, useState } from 'react';
 import { Image } from 'react-native';
 
@@ -32,7 +33,18 @@ const Favorites: React.FC = () => {
 
   useEffect(() => {
     async function loadFavorites(): Promise<void> {
-      // Load favorite foods from api
+      // Load favorite foods from api //
+      const response = await api.get('/favorites');
+
+      const favoritesList = response.data as Food[];
+
+      favoritesList.map(food => {
+        food.formattedPrice = formatValue(food.price);
+
+        return food;
+      });
+
+      setFavorites(favoritesList);
     }
 
     loadFavorites();
